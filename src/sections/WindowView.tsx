@@ -1,4 +1,5 @@
 import styles from './WindowView.module.css'
+import { asset } from '../lib/asset'
 
 /** The camera turns to the arched windows here; the copy stays compact so the 3D view stays visible. */
 export function WindowView() {
@@ -17,8 +18,8 @@ export function WindowView() {
             становится частью вашего мероприятия — и лучшим ориентиром для гостей.
           </p>
           <div className={styles.photos} data-reveal>
-            <img src="/img/interior/7-sm.webp" alt="Вид из арочного окна на Национальную библиотеку" loading="lazy" />
-            <img src="/img/interior/8-sm.webp" alt="Вид на променад и фонтан" loading="lazy" />
+            <img src={asset('/img/interior/7-sm.webp')} alt="Вид из арочного окна на Национальную библиотеку" loading="lazy" />
+            <img src={asset('/img/interior/8-sm.webp')} alt="Вид на променад и фонтан" loading="lazy" />
           </div>
         </div>
       </div>

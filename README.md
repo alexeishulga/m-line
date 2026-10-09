@@ -16,6 +16,14 @@ npm run typecheck  # TypeScript
 npm run images     # пересобрать WebP из assets/ (нужен Python 3 + Pillow)
 ```
 
+## Публикация на GitHub Pages
+
+Сайт публикуется автоматически при каждом пуше в `main` ([.github/workflows/deploy.yml](.github/workflows/deploy.yml)) и доступен по ссылке **https://alexeishulga.github.io/m-line/**.
+
+Один раз нужно включить Pages: на GitHub откройте репозиторий → **Settings → Pages → Source: GitHub Actions**. На бесплатном аккаунте Pages работает только для публичного репозитория.
+
+Сайт на Pages открывается из подпапки `/m-line/`, поэтому для публикации используется отдельная сборка `npm run build:pages`. Пути к файлам из `public/` в коде нужно писать через `asset('/img/...')` из `src/lib/asset.ts`, иначе на Pages они не найдутся.
+
 ## Что сделано
 
 | Задание | Где смотреть | Описание идеи |

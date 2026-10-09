@@ -3,6 +3,7 @@ import * as THREE from 'three'
 import { useTexture } from '@react-three/drei'
 import { COLORS, COLUMN, HALF_D, HALF_W, ROOM, WALL_T, WINDOW, WINDOW_X, archTop } from './roomConfig'
 import { makeHerringbone, makePanels, makePlaster, makeRibs } from './textures'
+import { asset } from '../lib/asset'
 
 /** Arch outline as a 2D path, centered at cx, optionally inset (for the frame's inner edge). */
 function archPath<T extends THREE.Path>(p: T, cx: number, inset = 0): T {
@@ -105,7 +106,7 @@ function ArchWindow({ cx, m }: { cx: number; m: RoomMaterials }) {
 
 /** View through the windows: photo of the National Library on a far plane (padded with a blurred copy). */
 function OutsideView() {
-  const tex = useTexture('/img/view-library-wide.webp', (t) => {
+  const tex = useTexture(asset('/img/view-library-wide.webp'), (t) => {
     t.colorSpace = THREE.SRGBColorSpace
   })
   // Original photo region spans 18×10 m; the padded texture is 2.4× wider and 2× taller.

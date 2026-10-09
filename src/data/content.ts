@@ -1,5 +1,6 @@
 // Site content. Prices, contacts and reviews are PLACEHOLDERS — replace them with real data here.
 import type { LayoutId, SceneId } from '../store/useAppStore'
+import { asset } from '../lib/asset'
 
 export const BRAND = {
   name: 'АРКА 123',
@@ -173,7 +174,7 @@ export interface Photo {
   wide?: boolean
 }
 
-const img = (name: string) => `/img/interior/${name}.webp`
+const img = (name: string) => asset(`/img/interior/${name}.webp`)
 
 export const GALLERY: Photo[] = [
   { src: img('7'), alt: 'Арочное окно с видом на Национальную библиотеку' },

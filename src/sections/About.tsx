@@ -1,5 +1,6 @@
 import { ABOUT } from '../data/content'
 import styles from './About.module.css'
+import { asset } from '../lib/asset'
 
 export function About() {
   return (
@@ -14,7 +15,7 @@ export function About() {
             </p>
           ))}
           <figure className={styles.figure}>
-            <img src="/img/interior/19-sm.webp" alt="Арка между двумя башнями дома АРКА 123" loading="lazy" width="800" height="450" />
+            <img src={asset('/img/interior/19-sm.webp')} alt="Арка между двумя башнями дома АРКА 123" loading="lazy" width="800" height="450" />
             <figcaption>Арка между башнями — с променада через неё видно Библиотеку</figcaption>
           </figure>
           <ul className={styles.facts}>
