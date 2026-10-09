@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#20363F" />
+    <meta name="description" content="АРКА 123 — пространство 123 м² для мастер-классов и семинаров с огромными арочными окнами и видом на Национальную библиотеку. Встречаемся напротив Библиотеки." />
+    <script>
+      // Every visit starts from the top: no browser scroll restoration and no jump to a #section on reload.
+      if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
+      if (location.hash) history.replaceState(null, '', location.pathname + location.search)
+      window.addEventListener('beforeunload', function () {
+        window.scrollTo(0, 0)
+      })
+    </script>
+    <title>АРКА 123 — Встречаемся напротив Библиотеки</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

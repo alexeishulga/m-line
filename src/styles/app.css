@@ -1,0 +1,90 @@
+/* Page sits above the fixed 3D background */
+.page,
+.site-footer {
+  position: relative;
+  z-index: 2;
+}
+
+.section {
+  position: relative;
+  padding-block: clamp(80px, 12vh, 140px);
+}
+
+.section-head {
+  display: grid;
+  gap: 14px;
+  max-width: 720px;
+  margin-bottom: clamp(28px, 5vh, 48px);
+}
+
+.section-head h2 {
+  font-size: clamp(34px, 4.6vw, 60px);
+  font-weight: 800;
+}
+
+.section-head p {
+  font-size: clamp(16px, 1.3vw, 19px);
+  color: var(--c-muted);
+}
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(32px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Scene-dependent scrim between the 3D room and the content */
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.scrim > span {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.9s var(--ease-out);
+}
+
+.scrim__left {
+  background: linear-gradient(90deg, rgb(244 238 229 / 0.94) 0%, rgb(244 238 229 / 0.72) 34%, rgb(244 238 229 / 0) 64%);
+}
+
+.scrim__right {
+  background: linear-gradient(270deg, rgb(244 238 229 / 0.92) 0%, rgb(244 238 229 / 0.6) 38%, rgb(244 238 229 / 0) 66%);
+}
+
+.scrim__full {
+  background: rgb(244 238 229 / 0.64);
+}
+
+.scrim__bottom {
+  background: linear-gradient(0deg, rgb(19 34 40 / 0.7) 0%, rgb(19 34 40 / 0) 60%);
+}
+
+.scrim[data-scene='hero'] .scrim__left,
+.scrim[data-scene='windows'] .scrim__left,
+.scrim[data-scene='about'] .scrim__right,
+.scrim[data-scene='services'] .scrim__full,
+.scrim[data-scene='gallery'] .scrim__full,
+.scrim[data-scene='pricing'] .scrim__full,
+.scrim[data-scene='reviews'] .scrim__full,
+.scrim[data-scene='footer'] .scrim__bottom {
+  opacity: 1;
+}
+
+@media (max-width: 860px) {
+  .scrim[data-scene='hero'] .scrim__full,
+  .scrim[data-scene='about'] .scrim__full,
+  .scrim[data-scene='windows'] .scrim__full {
+    opacity: 1;
+  }
+}

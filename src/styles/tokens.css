@@ -1,0 +1,37 @@
+:root {
+  /* Brand palette — sampled from assets/logo and the interior photos */
+  --c-navy: #20363f;
+  --c-navy-900: #132228;
+  --c-navy-700: #2c4a56;
+  --c-navy-500: #4f6c78;
+  --c-paper: #fbf8f3;
+  --c-cream: #f4eee5;
+  --c-sand: #e6dbcb;
+  --c-oak: #c79a62;
+  --c-sunset: #ef9f5a;
+  --c-sunset-soft: #f7c98e;
+  --c-ink: #17262d;
+  --c-muted: #5b6b72;
+  --c-line: rgb(32 54 63 / 0.14);
+
+  --glass: rgb(251 248 243 / 0.86);
+  --glass-strong: rgb(251 248 243 / 0.94);
+  --glass-dark: rgb(19 34 40 / 0.78);
+
+  --font-display: 'Manrope', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  --radius-s: 10px;
+  --radius-m: 18px;
+  --radius-l: 28px;
+  --radius-arch: 999px 999px var(--radius-m) var(--radius-m);
+
+  --shadow-soft: 0 18px 50px -24px rgb(19 34 40 / 0.45);
+  --shadow-card: 0 2px 0 rgb(255 255 255 / 0.6) inset, 0 24px 60px -30px rgb(19 34 40 / 0.5);
+
+  --gutter: clamp(16px, 4vw, 56px);
+  --content: 1180px;
+  --header-h: 76px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}

@@ -1,0 +1,151 @@
+.masonry {
+  columns: 4 240px;
+  column-gap: 14px;
+}
+
+.item {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 0 0 14px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-m);
+  overflow: hidden;
+  background: var(--c-sand);
+  cursor: zoom-in;
+  break-inside: avoid;
+}
+
+.item:nth-child(5n + 1) {
+  border-radius: 999px 999px var(--radius-m) var(--radius-m);
+}
+
+.item img {
+  width: 100%;
+  height: auto;
+  transition: transform 0.9s var(--ease-out);
+}
+
+.item:hover img {
+  transform: scale(1.05);
+}
+
+.caption {
+  position: absolute;
+  inset: auto 0 0;
+  padding: 30px 14px 12px;
+  background: linear-gradient(transparent, rgb(19 34 40 / 0.75));
+  color: var(--c-paper);
+  font-size: 13px;
+  text-align: left;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 0.4s,
+    transform 0.4s var(--ease-out);
+}
+
+.item:hover .caption,
+.item:focus-visible .caption {
+  opacity: 1;
+  transform: none;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  padding: 60px 70px;
+  background: rgb(13 24 29 / 0.92);
+  backdrop-filter: blur(8px);
+  animation: fade 0.3s ease;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.lightbox img {
+  max-width: 100%;
+  max-height: calc(100vh - 140px);
+  border-radius: var(--radius-m);
+  box-shadow: 0 40px 80px -30px #000;
+}
+
+.lbCaption {
+  position: absolute;
+  bottom: 22px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  color: var(--c-paper);
+  font-size: 14px;
+}
+
+.lbCaption span {
+  opacity: 0.6;
+}
+
+.nav,
+.close {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(251 248 243 / 0.12);
+  color: var(--c-paper);
+  font-size: 30px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.nav:hover,
+.close:hover {
+  background: rgb(251 248 243 / 0.25);
+}
+
+.prev {
+  left: 14px;
+  top: 50%;
+}
+
+.next {
+  right: 14px;
+  top: 50%;
+}
+
+.close {
+  top: 14px;
+  right: 14px;
+}
+
+@media (max-width: 640px) {
+  .masonry {
+    columns: 2;
+    column-gap: 8px;
+  }
+
+  .item {
+    margin-bottom: 8px;
+  }
+
+  .lightbox {
+    padding: 60px 12px;
+  }
+
+  .nav {
+    top: auto;
+    bottom: 60px;
+  }
+}

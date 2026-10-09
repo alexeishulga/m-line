@@ -1,0 +1,20 @@
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--c-navy);
+  text-decoration: none;
+}
+
+.icon {
+  display: block;
+  width: auto;
+  height: 40px;
+  overflow: visible;
+}
+
+.wordmark {
+  display: block;
+  height: 19px;
+  width: auto;
+}

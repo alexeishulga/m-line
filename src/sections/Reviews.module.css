@@ -1,0 +1,123 @@
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+}
+
+.arrows {
+  display: flex;
+  gap: 8px;
+  margin-bottom: clamp(28px, 5vh, 48px);
+}
+
+.arrows button {
+  width: 52px;
+  height: 52px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--c-navy);
+  color: var(--c-paper);
+  font-size: 20px;
+  cursor: pointer;
+  transition: transform 0.3s var(--ease-out);
+}
+
+.arrows button:hover {
+  transform: scale(1.08);
+}
+
+.track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: min(420px, 82vw);
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding: 10px 2px 30px;
+}
+
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin: 0;
+  padding: 30px 28px 26px;
+  scroll-snap-align: start;
+  transition:
+    transform 0.6s var(--ease-out),
+    box-shadow 0.6s;
+}
+
+.current {
+  transform: translateY(-6px);
+}
+
+.quote {
+  width: 34px;
+  color: var(--c-sunset);
+}
+
+.card blockquote {
+  flex: 1;
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--c-navy);
+}
+
+.card figcaption {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--c-muted);
+}
+
+.card figcaption b {
+  display: block;
+  font-family: var(--font-display);
+  color: var(--c-navy);
+  font-size: 15px;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px 999px 10px 10px;
+  background: var(--c-navy);
+  color: var(--c-sunset-soft);
+  font-family: var(--font-display);
+  font-weight: 800;
+}
+
+.dots {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.dots button {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgb(32 54 63 / 0.25);
+  cursor: pointer;
+  transition:
+    width 0.4s var(--ease-out),
+    background 0.3s;
+}
+
+.dots button[aria-current='true'] {
+  width: 26px;
+  background: var(--c-navy);
+}

@@ -1,0 +1,47 @@
+.windows {
+  min-height: 130vh;
+  display: flex;
+  align-items: center;
+}
+
+.copy {
+  display: grid;
+  gap: 18px;
+  max-width: 520px;
+}
+
+.title {
+  font-size: clamp(32px, 4vw, 56px);
+  font-weight: 800;
+}
+
+.title span {
+  white-space: nowrap;
+  color: var(--c-sunset);
+}
+
+.text {
+  color: var(--c-navy-700);
+  font-size: 17px;
+}
+
+.photos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 8px;
+  max-width: 400px;
+}
+
+.photos img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 999px 999px var(--radius-m) var(--radius-m);
+  border: 4px solid var(--c-paper);
+  box-shadow: var(--shadow-soft);
+}
+
+.photos img:nth-child(2) {
+  margin-top: 36px;
+}
