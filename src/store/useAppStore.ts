@@ -14,6 +14,8 @@ export type SceneId =
 export type LayoutId = 'empty' | 'masterclass' | 'boardroom' | 'groups'
 
 interface AppState {
+  /** The arch-shaped hole of the preloader has started to open: the 3D room becomes visible. */
+  revealing: boolean
   /** Preloader finished and the arch has opened. */
   entered: boolean
   /** 0…1 combined loading progress (fonts, textures, 3D scene). */
@@ -26,6 +28,7 @@ interface AppState {
   scene: SceneId
   /** Furniture layout the visitor picked in the "Наше помещение" section. */
   chosenLayout: LayoutId
+  setRevealing: () => void
   setEntered: (v: boolean) => void
   setSceneReady: () => void
   setThreeProgress: (v: number) => void
@@ -35,13 +38,15 @@ interface AppState {
 }
 
 export const useAppStore = create<AppState>((set) => ({
+  revealing: false,
   entered: false,
   loadProgress: 0,
   sceneReady: false,
   threeProgress: 0,
   scene: 'hero',
   chosenLayout: 'masterclass',
-  setEntered: (entered) => set({ entered }),
+  setRevealing: () => set((s) => (s.revealing ? s : { revealing: true })),
+  setEntered: (entered) => set((s) => (s.entered === entered ? s : { entered, revealing: s.revealing || entered })),
   setSceneReady: () => set((s) => (s.sceneReady ? s : { sceneReady: true })),
   setThreeProgress: (v) => set((s) => (v > s.threeProgress ? { threeProgress: v } : s)),
   setLoadProgress: (v) =>

@@ -19,6 +19,9 @@ const ARCH_MASK = `url("data:image/svg+xml,${encodeURIComponent(
 )}")`
 
 const FORCE_AFTER_MS = 12000
+/** The intro waits for the 3D scene's first frame (shader compilation blocks the main thread and would make the
+ * drawing stutter), but never longer than this. */
+const START_CAP_S = 2.5
 
 /**
  * "Входим через арку": the base line, the arch and 1-2-3 draw themselves, warm window light rises with the
@@ -29,6 +32,7 @@ export function Preloader() {
   const iconWrap = useRef<HTMLDivElement>(null)
   const progress = useAppStore((s) => s.loadProgress)
   const setEntered = useAppStore((s) => s.setEntered)
+  const setRevealing = useAppStore((s) => s.setRevealing)
   // read once: the intro runs a single time, it must not restart if the OS setting flips mid-session
   const [reduced] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches)
   const [gone, setGone] = useState(false)
@@ -78,29 +82,53 @@ export function Preloader() {
           0,
         )
         if (reduced) {
-          tl.to(el, { opacity: 0, duration: 0.5 }).add(() => setEntered(true), 0.2)
+          tl.add(setRevealing).to(el, { opacity: 0, duration: 0.5 }).add(() => setEntered(true))
           return
         }
         tl.add(() => {
+          setRevealing()
           el.style.setProperty('--arch-mask', ARCH_MASK)
           apply()
           el.classList.add(styles.opening)
         })
           .to(proxy, { s: cover, duration: 1.5, ease: 'power3.in', onUpdate: apply })
-          .add(() => setEntered(true), '-=0.9')
           .to(el, { opacity: 0, duration: 0.3 }, '-=0.2')
+          // the site's own entrance (Anna, hero copy, scroll triggers) starts only once the arch has fully opened,
+          // so its setup work can't make the opening stutter
+          .add(() => setEntered(true))
       })
       exitRef.current = exit
 
       const finishIntro = () => {
         state.current.introDone = true
+        // wake the 3D render loop while the logo stands still, so its first continuous frames don't stutter the reveal
+        setRevealing()
         if (useAppStore.getState().loadProgress >= 1 || state.current.forced) exit()
       }
 
-      gsap.set(q('[data-part="light"]'), { scaleY: 0, transformOrigin: '50% 100%' })
+      // the light lives inside the arch: until the arch is drawn it would float as a lone orange block
+      gsap.set(q('[data-part="light"]'), { scaleY: 0, opacity: reduced ? 1 : 0, transformOrigin: '50% 100%' })
+
+      // Start the intro on the 3D scene's first frame (or after START_CAP_S on slow devices).
+      let unsub = () => {}
+      const whenSceneReady = (start: () => void) => {
+        let started = false
+        const go = contextSafe!(() => {
+          if (started) return
+          started = true
+          unsub()
+          cap.kill()
+          start()
+        })
+        const cap = gsap.delayedCall(START_CAP_S, go)
+        if (useAppStore.getState().sceneReady) return go()
+        unsub = useAppStore.subscribe((s) => s.sceneReady && go())
+      }
+
       if (reduced) {
-        gsap.from(q(`.${styles.stack}`), { opacity: 0, duration: 0.6, onComplete: finishIntro })
-        return
+        gsap.set(q(`.${styles.stack}`), { opacity: 0 })
+        whenSceneReady(() => gsap.to(q(`.${styles.stack}`), { opacity: 1, duration: 0.6, onComplete: finishIntro }))
+        return () => unsub()
       }
       prepareDraw(
         q('[data-part="mk-base"], [data-part="mk-arch"], [data-part="mk-one"], [data-part="mk-two"], [data-part="mk-three"]'),
@@ -109,10 +137,11 @@ export function Preloader() {
       gsap.set(q('[data-part="glyph"]'), { yPercent: 115 })
       gsap.set(q(`.${styles.slogan}`), { opacity: 0, y: 14 })
 
-      gsap
-        .timeline({ delay: 0.25, onComplete: finishIntro })
+      const intro = gsap
+        .timeline({ paused: true, delay: 0.15, onComplete: finishIntro })
         .to(q('[data-part="mk-base"]'), { strokeDashoffset: 0, duration: 0.6, ease: 'power2.inOut' })
         .to(q('[data-part="mk-arch"]'), { strokeDashoffset: 0, duration: 1.05, ease: 'power2.inOut' }, '-=0.12')
+        .to(q('[data-part="light"]'), { opacity: 1, duration: 0.6, ease: 'power1.out' }, '-=0.45')
         .to(q('[data-part="mk-one"]'), { strokeDashoffset: 0, duration: 0.5, ease: 'power3.out' }, '-=0.4')
         .to(q('[data-part="mk-flag"]'), { scale: 1, duration: 0.4, ease: 'back.out(2.4)' }, '-=0.12')
         .to(q('[data-part="mk-two"]'), { strokeDashoffset: 0, duration: 0.55, ease: 'power2.inOut' }, '-=0.25')
@@ -120,6 +149,8 @@ export function Preloader() {
         .to(q('[data-part="glyph"]'), { yPercent: 0, duration: 0.8, stagger: 0.06, ease: 'power4.out' }, '-=0.35')
         .to(q(`.${styles.slogan}`), { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.45')
         .to(q(`.${styles.skip}`), { opacity: 1, duration: 0.4 }, 3.5)
+      whenSceneReady(() => intro.play())
+      return () => unsub()
     },
     { scope: root },
   )

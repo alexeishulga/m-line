@@ -21,6 +21,10 @@
 html {
   -webkit-text-size-adjust: 100%;
   scroll-padding-top: var(--header-h);
+  /* keep the scrollbar's space reserved while scrolling is locked by the preloader,
+     otherwise the page (and the 3D canvas) jumps sideways when the site opens */
+  scrollbar-gutter: stable;
+  background: var(--c-cream);
 }
 
 body {

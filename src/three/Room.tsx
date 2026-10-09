@@ -92,8 +92,9 @@ function ArchWindow({ cx, m }: { cx: number; m: RoomMaterials }) {
         </mesh>
       ))}
       <mesh geometry={glassGeo} material={m.glass} position={[0, 0, 0.01]} />
-      {/* sill */}
-      <mesh material={m.frame} position={[0, WINDOW.sill - 0.025, WALL_T / 2 - 0.05]} receiveShadow castShadow>
+      {/* sill: its top sits 12 mm above the bottom of the wall opening — if the two surfaces were coplanar
+          the GPU couldn't tell which is in front and the sill would flicker (z-fighting) */}
+      <mesh material={m.frame} position={[0, WINDOW.sill - 0.013, WALL_T / 2 - 0.05]} receiveShadow castShadow>
         <boxGeometry args={[WINDOW.w + 0.2, 0.05, WALL_T * 0.7]} />
       </mesh>
       {/* radiator */}

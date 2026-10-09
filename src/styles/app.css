@@ -70,21 +70,21 @@
   background: linear-gradient(0deg, rgb(19 34 40 / 0.7) 0%, rgb(19 34 40 / 0) 60%);
 }
 
-.scrim[data-scene='hero'] .scrim__left,
-.scrim[data-scene='windows'] .scrim__left,
-.scrim[data-scene='about'] .scrim__right,
-.scrim[data-scene='services'] .scrim__full,
-.scrim[data-scene='gallery'] .scrim__full,
-.scrim[data-scene='pricing'] .scrim__full,
-.scrim[data-scene='reviews'] .scrim__full,
-.scrim[data-scene='footer'] .scrim__bottom {
+.scrim[data-active-scene='hero'] .scrim__left,
+.scrim[data-active-scene='windows'] .scrim__left,
+.scrim[data-active-scene='about'] .scrim__right,
+.scrim[data-active-scene='services'] .scrim__full,
+.scrim[data-active-scene='gallery'] .scrim__full,
+.scrim[data-active-scene='pricing'] .scrim__full,
+.scrim[data-active-scene='reviews'] .scrim__full,
+.scrim[data-active-scene='footer'] .scrim__bottom {
   opacity: 1;
 }
 
 @media (max-width: 860px) {
-  .scrim[data-scene='hero'] .scrim__full,
-  .scrim[data-scene='about'] .scrim__full,
-  .scrim[data-scene='windows'] .scrim__full {
+  .scrim[data-active-scene='hero'] .scrim__full,
+  .scrim[data-active-scene='about'] .scrim__full,
+  .scrim[data-active-scene='windows'] .scrim__full {
     opacity: 1;
   }
 }

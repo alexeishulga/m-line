@@ -69,7 +69,8 @@ export default function App() {
       <Suspense fallback={null}>
         <BackgroundScene />
       </Suspense>
-      <div className="scrim" data-scene={scene} aria-hidden="true">
+      {/* data-active-scene, not data-scene: [data-scene] marks the page sections that drive the tour */}
+      <div className="scrim" data-active-scene={scene} aria-hidden="true">
         <span className="scrim__left" />
         <span className="scrim__right" />
         <span className="scrim__full" />

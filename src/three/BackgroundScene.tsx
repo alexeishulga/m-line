@@ -1,6 +1,6 @@
 import { Suspense, useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
-import { Canvas, useFrame } from '@react-three/fiber'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Environment, Html, Lightformer, PerformanceMonitor, useProgress } from '@react-three/drei'
 import { Room } from './Room'
 import { Furnishing } from './Furnishing'
@@ -40,12 +40,28 @@ function Lights({ shadows }: { shadows: boolean }) {
   )
 }
 
+/**
+ * Runs once everything inside <Suspense> is mounted: compiles every shader up front (including the furniture of
+ * layouts that are hidden right now, which three.js would otherwise compile on first show and stutter), then tells
+ * the preloader the scene is ready.
+ */
 function ReadySignal() {
   const done = useRef(false)
+  const invalidate = useThree((s) => s.invalidate)
   const setSceneReady = useAppStore((s) => s.setSceneReady)
-  useFrame(() => {
+  useEffect(() => invalidate(), [invalidate])
+  useFrame(({ gl, scene, camera }) => {
     if (done.current) return
     done.current = true
+    const hidden: THREE.Object3D[] = []
+    scene.traverse((o) => {
+      if (!o.visible) {
+        hidden.push(o)
+        o.visible = true
+      }
+    })
+    gl.compile(scene, camera)
+    hidden.forEach((o) => (o.visible = false))
     requestAnimationFrame(() => setSceneReady())
   })
   return null
@@ -68,6 +84,8 @@ const HOTSPOTS: { p: [number, number, number]; title: string; text: string }[] =
 
 export default function BackgroundScene() {
   const scene = useAppStore((s) => s.scene)
+  const revealing = useAppStore((s) => s.revealing)
+  const entered = useAppStore((s) => s.entered)
   const layout = useActiveLayout()
   const mobile = useIsMobile()
   const fine = useFinePointer()
@@ -81,12 +99,16 @@ export default function BackgroundScene() {
         className={styles.canvas}
         shadows={mobile ? false : 'percentage'}
         dpr={dpr}
-        camera={{ fov: mobile ? 62 : 50, near: 0.05, far: 120, position: SCENE_CAMERA.hero.pos }}
+        // hidden behind the preloader the room only needs its first frame; it starts rendering when the arch opens
+        frameloop={revealing ? 'always' : 'demand'}
+        camera={{ fov: mobile ? 62 : 50, near: 0.1, far: 120, position: SCENE_CAMERA.hero.pos }}
         gl={{ antialias: true, powerPreference: 'high-performance' }}
       >
         <color attach="background" args={['#d4dce1']} />
         <ProgressBridge />
-        <PerformanceMonitor onDecline={() => setDpr(1)} onIncline={() => setDpr(mobile ? 1.25 : 1.6)} />
+        {/* only lowers quality, and only after the entrance: the first frames are slow (shader compilation) and
+            switching resolution mid-reveal would make the canvas jump */}
+        {entered && <PerformanceMonitor onDecline={() => setDpr(1)} />}
         <Suspense fallback={null}>
           <Lights shadows={!mobile} />
           <Room />

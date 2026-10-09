@@ -49,7 +49,11 @@ export function Hero() {
             <a href="#space" className="btn btn--ghost">
               Зал в 3D
               <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 3a9 9 0 1 0 9 9M12 3c2.5 2.4 3.8 5.4 3.8 9M12 3C9.5 5.4 8.2 8.4 8.2 12s1.3 6.6 3.8 9M3.5 9h17M3.5 15H14" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                <g fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
+                  <circle cx="12" cy="12" r="9" />
+                  <ellipse cx="12" cy="12" rx="4" ry="9" />
+                  <path d="M3 12h18M4.6 7h14.8M4.6 17h14.8" />
+                </g>
               </svg>
             </a>
           </div>
